@@ -12,7 +12,7 @@ public class CreateAccount {
     private JTextField txtPassword;
     private JButton btnOk;
     private JLabel lblError;
-    private JPanel Form;
+    public JPanel Form;
 
 
 
@@ -59,15 +59,15 @@ public class CreateAccount {
 
     // Helper method for authentication logic (replace with your own logic)
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Create Account");
-        frame.setPreferredSize(new Dimension(300,400));
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setContentPane(new CreateAccount().Form);
-        frame.pack();
-        frame.setVisible(true);
+  //  public static void main(String[] args) {
+  //      JFrame frame = new JFrame("Create Account");
+  //      frame.setPreferredSize(new Dimension(300,400));
+  //      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+  //      frame.setContentPane(new CreateAccount().Form);
+  //      frame.pack();
+   //     frame.setVisible(true);
 
-    }
+    //}
 
 
     // A simple User class for demo purposes
