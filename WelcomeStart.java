@@ -13,9 +13,14 @@ public class WelcomeStart {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == startButton) {
-                    JFrame startFrame = (JFrame) SwingUtilities.getWindowAncestor(startButton); // got from ChatGPT
-                    startFrame.setVisible(false);
-                    Login.main(new String[0]);
+                    JFrame startFrame1 = (JFrame) SwingUtilities.getWindowAncestor(startButton); // got from ChatGPT
+                    startFrame1.setVisible(false);
+                    JFrame startFrame = new JFrame("Login");
+                    startFrame.setContentPane(new Login().Login);
+                    startFrame.setPreferredSize(new Dimension(300, 400));
+                    startFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    startFrame.pack();
+                    startFrame.setVisible(true);
 
 
                 }
@@ -32,4 +37,8 @@ public class WelcomeStart {
         startFrame.pack();
         startFrame.setVisible(true);
     }
-}
+
+
+
+    }
+

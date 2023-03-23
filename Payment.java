@@ -20,15 +20,10 @@ public class Payment{
     private JFormattedTextField postalField;
     private JButton cancelPaymentButton;
     private JButton confirmPaymentButton;
-    private JPanel paymentPanel;
+    public JPanel paymentPanel;
 
     public Payment() {
-        JFrame payment = new JFrame();
-        payment.setContentPane(paymentPanel);
-        payment.setTitle("Payment");
-        payment.setSize(650,500);
-        payment.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        payment.setVisible(true);
+
 
     }
 
