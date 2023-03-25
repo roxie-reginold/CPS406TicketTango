@@ -1,3 +1,4 @@
+import System.TicketPurchasingSystem;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -36,6 +37,7 @@ public class WelcomeStart {
         startFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         startFrame.pack();
         startFrame.setVisible(true);
+
     }
 
 

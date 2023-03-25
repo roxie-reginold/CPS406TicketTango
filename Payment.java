@@ -1,3 +1,5 @@
+import Database.UserDatabase.*;
+
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
@@ -48,7 +50,7 @@ public class Payment{
         confirmPaymentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //
+                //take the objects in cart of the user and turn them into order history
             }
         });
     }

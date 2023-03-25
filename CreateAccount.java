@@ -1,3 +1,5 @@
+import Database.UserDatabase.*;
+import System.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +19,7 @@ public class CreateAccount {
 
 
     public CreateAccount() {
-        btnOk.addActionListener(new ActionListener() {
+        /*btnOk.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() ==  btnOk) {
@@ -27,30 +29,26 @@ public class CreateAccount {
                     String password = String.valueOf(txtPassword.getText());
                     lblError.setText("");
                     // Validate email format
-                    if (!isValidEmail(email)) {
+                    if ((!isValidEmail(email)) || (password.length() < 8) || (first.length() < 1)
+                    || (last.length() < 1) ) {
                         lblError.setText("Invalid info");
 
                     }
 
-                    // Validate password length
-                    if (password.length() < 8) {
-                        lblError.setText("Invalid info");
 
-                    }
-                    if (first.length() < 1) {
-                        lblError.setText("Invalid info");
 
-                    }
-                    if (last.length() < 1) {
-                        lblError.setText("Invalid info");
 
-                    }
-
+                    Customer newCustomer = new Customer( email, password, first, last);
+                    TicketPurchasingSystem tps = new TicketPurchasingSystem();
+                    //tps.custs.add(newCustomer);
 
 
                 }
             }
-        });
+        }); */
+        TicketPurchasingSystem okButtonListener = new TicketPurchasingSystem(txtFirstName, txtLastName, txtEmail, txtPassword, lblError, btnOk);
+        btnOk.addActionListener(okButtonListener);
+
         backToLogInButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
