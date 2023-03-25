@@ -8,6 +8,7 @@ public class MyCart {
     private JButton logoutButton;
     public JPanel Cart;
     private JButton checkoutButton;
+    private JButton homeButton;
 
 
     public MyCart() {
@@ -20,7 +21,7 @@ public class MyCart {
                     JFrame payment = new JFrame("Payment");
                     payment.setContentPane(new Payment().paymentPanel);
                     payment.setTitle("Payment");
-                    payment.setSize(650,500);
+                    payment.setSize(800,700);
                     payment.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                     payment.setVisible(true);
                     //JFrame startFrame = new JFrame("Login");
@@ -32,6 +33,19 @@ public class MyCart {
 
 
                 }
+            }
+        });
+        homeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame startFrame2 = (JFrame) SwingUtilities.getWindowAncestor(homeButton); // got from ChatGPT
+                startFrame2.setVisible(false);
+                JFrame startFrame = new JFrame("Home");
+                startFrame.setContentPane(new Home().HomeSearch);
+                startFrame.setPreferredSize(new Dimension(800, 700));
+                startFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                startFrame.pack();
+                startFrame.setVisible(true);
             }
         });
     }

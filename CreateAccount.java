@@ -1,8 +1,8 @@
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.Normalizer;
 
 public class CreateAccount {
 
@@ -13,39 +13,55 @@ public class CreateAccount {
     private JButton btnOk;
     private JLabel lblError;
     public JPanel Form;
-
+    private JButton backToLogInButton;
 
 
     public CreateAccount() {
         btnOk.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String first = txtFirstName.getText();
-                String last = txtLastName.getText();
-                String email = txtEmail.getText();
-                String password = String.valueOf(txtPassword.getText());
-                lblError.setText("");
-                // Validate email format
-                if (!isValidEmail(email)) {
-                    lblError.setText("Invalid info");
-                    return;
-                }
+                if (e.getSource() ==  btnOk) {
+                    String first = txtFirstName.getText();
+                    String last = txtLastName.getText();
+                    String email = txtEmail.getText();
+                    String password = String.valueOf(txtPassword.getText());
+                    lblError.setText("");
+                    // Validate email format
+                    if (!isValidEmail(email)) {
+                        lblError.setText("Invalid info");
 
-                // Validate password length
-                if (password.length() < 8) {
-                    lblError.setText("Invalid info");
-                    return;
-                }
-                if (first.length() < 1) {
-                    lblError.setText("Invalid info");
-                    return;
-                }
-                if (last.length() < 1) {
-                    lblError.setText("Invalid info");
-                    return;
-                }
+                    }
+
+                    // Validate password length
+                    if (password.length() < 8) {
+                        lblError.setText("Invalid info");
+
+                    }
+                    if (first.length() < 1) {
+                        lblError.setText("Invalid info");
+
+                    }
+                    if (last.length() < 1) {
+                        lblError.setText("Invalid info");
+
+                    }
 
 
+
+                }
+            }
+        });
+        backToLogInButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame startFrame1 = (JFrame) SwingUtilities.getWindowAncestor(backToLogInButton); // got from ChatGPT
+                startFrame1.setVisible(false);
+                JFrame startFrame = new JFrame("Login");
+                startFrame.setContentPane(new Login().Login);
+                startFrame.setPreferredSize(new Dimension(300, 400));
+                startFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                startFrame.pack();
+                startFrame.setVisible(true);
             }
         });
     }

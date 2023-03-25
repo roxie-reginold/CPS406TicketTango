@@ -42,7 +42,7 @@ public class Login {
                     startFrame2.setVisible(false);
                     JFrame startFrame = new JFrame("Create An Account");
                     startFrame.setContentPane(new CreateAccount().Form);
-                    startFrame2.setPreferredSize(new Dimension(300,400));
+                    startFrame2.setPreferredSize(new Dimension(500,600));
                     startFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     startFrame.pack();
                     startFrame.setVisible(true);

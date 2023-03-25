@@ -1,5 +1,8 @@
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 public class Payment{
@@ -25,6 +28,29 @@ public class Payment{
     public Payment() {
 
 
+        cancelPaymentButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == cancelPaymentButton) {
+                    JFrame startFrame3 = (JFrame) SwingUtilities.getWindowAncestor(cancelPaymentButton); // got from ChatGPT
+                    startFrame3.setVisible(false);
+                    JFrame startFrame = new JFrame("My Cart");
+                    startFrame.setContentPane(new MyCart().Cart);
+                    startFrame.setPreferredSize(new Dimension(800, 700));
+                    startFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    startFrame.pack();
+                    startFrame.setVisible(true);
+
+
+                }
+            }
+        });
+        confirmPaymentButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //
+            }
+        });
     }
 
     public static void main(String[] args) {
