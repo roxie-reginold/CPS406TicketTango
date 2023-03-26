@@ -49,7 +49,7 @@ public class Event{
     this.location = location;
   }
 
-  public void setDate(Date date) {
+  public void setDate(String date) {
     this.date = date;
   }
 

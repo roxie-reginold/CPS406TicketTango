@@ -17,7 +17,7 @@ public class Cart {
     // }
    public boolean addToCart(Event item){
       if (item.getNumberofTickets() > 0){
-        cartItems.add(item);
+        this.cartItems.add(item);
         return true;
       }
      return false;

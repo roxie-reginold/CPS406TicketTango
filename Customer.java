@@ -68,7 +68,10 @@ public class Customer extends User{
   // public Ticket viewTicket(String email) {
   //   //for (Ticket ticket : OrderHistory){}
   //   return ;
-  // }  
+  // }
+  public String toString() {
+      return getEmail() + "," + getPassword();
+  }
 
   
   

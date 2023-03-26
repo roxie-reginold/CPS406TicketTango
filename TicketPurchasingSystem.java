@@ -1,5 +1,6 @@
 package System;
 import Database.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -9,10 +10,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class TicketPurchasingSystem implements ActionListener {
-
-
-
-    //
     private UserDatabase customerDatabase;
     //private ArrayList<Customer> custs;
 
@@ -27,6 +24,8 @@ public class TicketPurchasingSystem implements ActionListener {
     private JTextField txtPassword;
     private JLabel lblError;
     private JButton btnOk;
+    private JButton btnAdd;
+    private Event eventtoAdd;
 
     public TicketPurchasingSystem(JTextField txtFirstName, JTextField txtLastName, JTextField txtEmail, JTextField txtPassword, JLabel lblError, JButton btnOk) {
         this.txtFirstName = txtFirstName;
@@ -36,6 +35,11 @@ public class TicketPurchasingSystem implements ActionListener {
         this.lblError = lblError;
         this.btnOk = btnOk;
         this.customerDatabase = new UserDatabase();
+    }
+
+    public TicketPurchasingSystem(JButton btnAdd, Event eventtoAdd){
+        this.btnAdd = btnAdd;
+        this.eventtoAdd = eventtoAdd;
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -52,9 +56,29 @@ public class TicketPurchasingSystem implements ActionListener {
 
             }
 
-            Customer newCustomer = new Customer( email, password, first, last);
-            newCustomer.print();
-            customerDatabase.addCustomers(newCustomer);
+            Customer c1 = new Customer( email, password, first, last);
+            c1.print();
+            customerDatabase.addCustomers(c1);
+            System.out.println(customerDatabase.print());
+           /* JFrame startFrame1 = (JFrame) SwingUtilities.getWindowAncestor(btnOk); // got from ChatGPT
+            startFrame1.setVisible(false);
+            JFrame startFrame = new JFrame("Events Page");
+            startFrame.setContentPane(new EventPage());
+            startFrame.setPreferredSize(new Dimension(600, 400));
+            startFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            startFrame.pack();
+            startFrame.setVisible(true);*/
+
+            if(e.getSource() == btnAdd) {
+                Cart cart = c1.getCart();
+                cart.addToCart(eventtoAdd);
+                System.out.println(cart);
+                c1.setCart(cart);
+            }
+
+
+
+
 
         }
     }
@@ -72,6 +96,8 @@ public class TicketPurchasingSystem implements ActionListener {
 
 
 
+
+
     private boolean isValidEmail(String email) {
         // A simple regex pattern to check if the email format is valid
         String emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}$";
@@ -79,8 +105,5 @@ public class TicketPurchasingSystem implements ActionListener {
     }
 
 
-
-
-
-  
 }
+

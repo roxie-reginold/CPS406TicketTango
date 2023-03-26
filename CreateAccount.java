@@ -19,33 +19,7 @@ public class CreateAccount {
 
 
     public CreateAccount() {
-        /*btnOk.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (e.getSource() ==  btnOk) {
-                    String first = txtFirstName.getText();
-                    String last = txtLastName.getText();
-                    String email = txtEmail.getText();
-                    String password = String.valueOf(txtPassword.getText());
-                    lblError.setText("");
-                    // Validate email format
-                    if ((!isValidEmail(email)) || (password.length() < 8) || (first.length() < 1)
-                    || (last.length() < 1) ) {
-                        lblError.setText("Invalid info");
 
-                    }
-
-
-
-
-                    Customer newCustomer = new Customer( email, password, first, last);
-                    TicketPurchasingSystem tps = new TicketPurchasingSystem();
-                    //tps.custs.add(newCustomer);
-
-
-                }
-            }
-        }); */
         TicketPurchasingSystem okButtonListener = new TicketPurchasingSystem(txtFirstName, txtLastName, txtEmail, txtPassword, lblError, btnOk);
         btnOk.addActionListener(okButtonListener);
 
@@ -57,6 +31,19 @@ public class CreateAccount {
                 JFrame startFrame = new JFrame("Login");
                 startFrame.setContentPane(new Login().Login);
                 startFrame.setPreferredSize(new Dimension(300, 400));
+                startFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                startFrame.pack();
+                startFrame.setVisible(true);
+            }
+        });
+        btnOk.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame startFrame1 = (JFrame) SwingUtilities.getWindowAncestor(btnOk); // got from ChatGPT
+                startFrame1.setVisible(false);
+                JFrame startFrame = new JFrame("Events Page");
+                startFrame.setContentPane(new EventPage().rootPanel);
+                startFrame.setPreferredSize(new Dimension(600, 400));
                 startFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 startFrame.pack();
                 startFrame.setVisible(true);

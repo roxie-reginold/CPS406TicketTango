@@ -41,7 +41,7 @@ public class MyCart {
                 JFrame startFrame2 = (JFrame) SwingUtilities.getWindowAncestor(homeButton); // got from ChatGPT
                 startFrame2.setVisible(false);
                 JFrame startFrame = new JFrame("Home");
-                startFrame.setContentPane(new Home().HomeSearch);
+                startFrame.setContentPane(new EventPage().rootPanel);
                 startFrame.setPreferredSize(new Dimension(800, 700));
                 startFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 startFrame.pack();

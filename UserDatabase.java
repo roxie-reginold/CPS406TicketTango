@@ -6,26 +6,26 @@ import java.util.*;
 
 
 public class UserDatabase {
-  private Map<String, String> customers; 
+  private Map<String, String> customers;
 
   public UserDatabase(){
     this.customers = new HashMap<String, String>();
-    
+
   }
-  
+
   public boolean addCustomers(Customer user){
     String email = (user.getEmail()).toLowerCase();
     String password = user.getPassword();
-   if (customers.containsKey(email)) {
-     return false;
+    if (customers.containsKey(email)) {
+      return false;
+    }
+
+    customers.put(email, password);
+    return true;
+
+
+
   }
-    
-  customers.put(email, password);
-  return true;
-    
-  
-     
-   }
 
 
 
@@ -39,19 +39,25 @@ public class UserDatabase {
     }
     return false;
   }
-  
-    
-  
-    
-    public boolean removeCustomer(Customer user){
-      String email =(user.getEmail()).toLowerCase();
-      if (customers.containsKey(email)) {
-          customers.remove(email);
-          return true;
-      } else {
-          return false;
-      }
+
+
+
+
+  public boolean removeCustomer(Customer user){
+    String email =(user.getEmail()).toLowerCase();
+    if (customers.containsKey(email)) {
+      customers.remove(email);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public Map<String, String> print (){
+
+    return customers;
   }
 
 
 }
+

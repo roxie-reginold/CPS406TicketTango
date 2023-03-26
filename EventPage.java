@@ -1,11 +1,15 @@
 
 import System.*;
+import System.Event;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -15,17 +19,28 @@ import java.util.Scanner;
 
 public class EventPage {
 
-    private String path="C:\\Users\\Shana\\IdeaProjects\\Table\\src\\Database\\EventDataBase.txt";
-    private JPanel rootPanel;
+    private String path="I:\\My Drive\\CPS209\\Java Programs\\406\\src\\Database\\EventDataBase.txt";
+    public JPanel rootPanel;
     private JPanel Table;
     private JPanel Title;
     private JPanel Input;
     private JButton btnAdd;
     private JTable showTable;
     private JTextField txtshow;
+    private JButton myCartButton;
     private Event event;
+    private JFrame frame;
 
     public EventPage(){
+         //this.frame= new JFrame("Search Event");
+        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //frame.setContentPane(new EventPage().rootPanel);
+        //frame.pack();
+        //frame.setSize(600, 400);
+        //frame.setLocationRelativeTo(null);//center UI
+        //frame.setVisible(true);
+
+
         showTable.setDefaultEditor(Object.class, null);
        createTable();
 
@@ -48,6 +63,24 @@ public class EventPage {
 
                 event = new Event(value1,value2,value3,tickets,price); //Send this object
 
+
+            }
+        });
+
+        TicketPurchasingSystem btnAddListener = new TicketPurchasingSystem(btnAdd, event);
+        btnAdd.addActionListener(btnAddListener);
+
+        myCartButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame startFrame2 = (JFrame) SwingUtilities.getWindowAncestor(myCartButton); // got from ChatGPT
+                startFrame2.setVisible(false);
+                JFrame startFrame = new JFrame("Home");
+                startFrame.setContentPane(new MyCart().Cart);
+                startFrame.setPreferredSize(new Dimension(800, 700));
+                startFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                startFrame.pack();
+                startFrame.setVisible(true);
 
             }
         });
@@ -113,16 +146,16 @@ public class EventPage {
 
 
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Search Event");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setContentPane(new EventPage().rootPanel);
-        frame.pack();
-        frame.setSize(600, 400);
-        frame.setLocationRelativeTo(null);//center UI
-        frame.setVisible(true);
+    //public static void main(String[] args) {
+   //     JFrame frame = new JFrame("Search Event");
+   //     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+   //     frame.setContentPane(new EventPage().rootPanel);
+   //     frame.pack();
+   //     frame.setSize(600, 400);
+    //    frame.setLocationRelativeTo(null);//center UI
+   //     frame.setVisible(true);
 
-    }
+    //}
 
 
 }
