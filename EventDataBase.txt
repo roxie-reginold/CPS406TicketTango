@@ -1,0 +1,7 @@
+Taylor Swift, Canada, 2023-06-25, 500, 150
+Justin Bieber, Canada, 2023-06-25, 500, 50
+Selena Gomez, UK, 2023-10-15, 700, 250
+BTS, USA, 2024-06-30, 800, 350
+Drake, Canada, 2023-09-13, 120, 200
+Jungkook, Canada, 2024-02-06, 1000, 650
+Jimin, Canada, 2024-01-15, 600, 520
