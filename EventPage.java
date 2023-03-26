@@ -1,15 +1,11 @@
 
 import System.*;
-import System.Event;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -19,35 +15,32 @@ import java.util.Scanner;
 
 public class EventPage {
 
-    private String path="I:\\My Drive\\CPS209\\Java Programs\\406\\src\\Database\\EventDataBase.txt";
-    public JPanel rootPanel;
+    private String path="C:\\Users\\Shana\\IdeaProjects\\Table\\src\\Database\\EventDataBase.txt";
+    private JPanel rootPanel;
     private JPanel Table;
     private JPanel Title;
     private JPanel Input;
     private JButton btnAdd;
     private JTable showTable;
     private JTextField txtshow;
-    private JButton myCartButton;
+    private JTable cartTable;
+    private JButton paymentButton;
+    private JTextArea txtTotal;
     private Event event;
-    private JFrame frame;
+    private Object[][] data;
+//    private double sum;
 
     public EventPage(){
-         //this.frame= new JFrame("Search Event");
-        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //frame.setContentPane(new EventPage().rootPanel);
-        //frame.pack();
-        //frame.setSize(600, 400);
-        //frame.setLocationRelativeTo(null);//center UI
-        //frame.setVisible(true);
-
-
         showTable.setDefaultEditor(Object.class, null);
+//        sum =0;
        createTable();
+        updateTotal();
 
         showTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+
                 int index = showTable.getSelectedRow();
                 TableModel model = showTable.getModel();
                 String value1 =model.getValueAt(index,0).toString().trim();
@@ -55,40 +48,78 @@ public class EventPage {
                 String value3 =(model.getValueAt(index,2).toString()).trim();
                 //Number values
                 String value4 =model.getValueAt(index,3).toString().trim();
-                int tickets = Integer.parseInt(value4);
+//                int tickets = Integer.parseInt(value4);
                 String value5 =model.getValueAt(index,4).toString().trim();
-                double price= Double.parseDouble(value5);
+//                double price= Double.parseDouble(value5);
 
                 txtshow.setText(value1);
-
-                event = new Event(value1,value2,value3,tickets,price); //Send this object
+//
+////                event = new Event(value1,value2,value3,tickets,price); //Send this object
+//                addToCart(value1,value2,value2,value4,value5);
 
 
             }
         });
-
-        TicketPurchasingSystem btnAddListener = new TicketPurchasingSystem(btnAdd, event);
-        btnAdd.addActionListener(btnAddListener);
-
-        myCartButton.addActionListener(new ActionListener() {
+        btnAdd.addMouseListener(new MouseAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                JFrame startFrame2 = (JFrame) SwingUtilities.getWindowAncestor(myCartButton); // got from ChatGPT
-                startFrame2.setVisible(false);
-                JFrame startFrame = new JFrame("Home");
-                startFrame.setContentPane(new MyCart().Cart);
-                startFrame.setPreferredSize(new Dimension(800, 700));
-                startFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                startFrame.pack();
-                startFrame.setVisible(true);
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                int index = showTable.getSelectedRow();
+                Object[] row = new Object[5];
+                DefaultTableModel model = (DefaultTableModel) showTable.getModel();
+                DefaultTableModel model2 = (DefaultTableModel) cartTable.getModel();
+                    row[0]=model.getValueAt(index,0);
+                    row[1]=model.getValueAt(index,1);
+                    row[2]=model.getValueAt(index,2);
+                    row[3]=model.getValueAt(index,3);
+                    row[4]=model.getValueAt(index,4);
+                    model2.addRow(row);
+                updateTotal();
+//                    sum= sum + Double.parseDouble(row[4].toString().trim());
+
+
+
+            }
+        });
+        cartTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                int selectedRow = cartTable.getSelectedRow();
+                if (selectedRow != -1) {
+                    DefaultTableModel model = (DefaultTableModel) cartTable.getModel();
+//                    sum=sum-Double.parseDouble(model.getValueAt(selectedRow,4).toString().trim());
+                    model.removeRow(selectedRow);
+                    updateTotal();
+
+                }
 
             }
         });
     }
+    private void updateTotal() {
+        txtTotal.setOpaque(false);
+        double subtotal = 0;
+        for (int i = 0; i < cartTable.getRowCount(); i++) {
+            double price = (double) cartTable.getValueAt(i, 4);
+            subtotal += price;
+        }
+        double tax = subtotal * 0.13;
+        double total = subtotal + tax;
+        String totalStr = String.format("Subtotal: %.2f%nTax: %.2f%nTotal: %.2f", subtotal, tax, total);
+        txtTotal.setText(totalStr);
+    }
+//    private void addToCart(String eventName, String location, String date, String tickets, String price){
+//        cartTable.addRow(new Object[]{eventName, location, date, tickets, price});
+////        cartTable.addRow(new Object[]{eventName, location, date, Integer.parseInt(tickets), Double.parseDouble(price)});
+//
+//
+//
+//    }
 
     private void createTable() {
         ArrayList<Event> events = getData();
-        Object[][] data = new Object[events.size()][5];
+        data = new Object[events.size()][5];
         for (int i = 0; i < events.size(); i++) {
             Event event = events.get(i);
             data[i] = new Object[]{event.getName(), event.getLocation(), event.getDate(), event.getNumberofTickets(), event.getPrice()};
@@ -96,7 +127,11 @@ public class EventPage {
 
         showTable.setModel(new DefaultTableModel(
                 data,
-                new String[]{"Event Name", "Location", "Date",  "Tickets", "Price",}
+                new String[]{"Event Name", "Location", "Date",  "Tickets", "Price"}
+        ));
+        cartTable.setModel(new DefaultTableModel(
+                null,
+                new String[]{"Event Name", "Location", "Date",  "Tickets", "Price"}
         ));
         TableColumnModel columns=showTable.getColumnModel();
         columns.getColumn( 0).setMinWidth (100);
@@ -146,16 +181,16 @@ public class EventPage {
 
 
 
-    //public static void main(String[] args) {
-   //     JFrame frame = new JFrame("Search Event");
-   //     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-   //     frame.setContentPane(new EventPage().rootPanel);
-   //     frame.pack();
-   //     frame.setSize(600, 400);
-    //    frame.setLocationRelativeTo(null);//center UI
-   //     frame.setVisible(true);
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Search Event");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setContentPane(new EventPage().rootPanel);
+        frame.pack();
+        frame.setSize(600, 400);
+        frame.setLocationRelativeTo(null);//center UI
+        frame.setVisible(true);
 
-    //}
+    }
 
 
 }
