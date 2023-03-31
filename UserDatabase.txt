@@ -4,3 +4,5 @@ Amy@gmail.com,Sunflower
 cats@cats.ca,12345678
 roxie@ticket.tango.ca,admin41
 shanaya@ticket.tango.ca,admin64
+riddhima@ticket.tango.ca,admin13
+barbodsn@ticket.tango.ca, Barbod1234
