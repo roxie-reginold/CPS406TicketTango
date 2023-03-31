@@ -1,0 +1,9 @@
+Taylor Swift, Canada, 2023-06-25, 0, 150.0
+Justin Bieber, Canada, 2023-06-25, 500, 50.0
+Selena Gomez, UK, 2023-10-15, 699, 250.0
+BTS, USA, 2024-06-30, 799, 350.0
+Drake, Canada, 2022-09-13, 120, 200.0
+Jungkook, Canada, 2024-02-06, 999, 650.0
+Jimin, Canada, 2024-01-15, 599, 520.0
+Suga, USA, 2023-06-09, 730, 430.0
+RM, Australia, 2024-05-07, 600, 375.0
