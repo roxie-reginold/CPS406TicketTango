@@ -1,4 +1,5 @@
 import Database.EventDatabase;
+import Database.ApiEventDatabase;
 import System.*;
 import System.Event;
 import java.time.LocalDate;
@@ -49,7 +50,7 @@ public class EventPage {
     public boolean flag= false;
     private double total;
     private Customer c1;
-    public EventDatabase eventDatabase;
+    public ApiEventDatabase eventDatabase;
 
     /**
      * Constructor for Event page.
@@ -58,7 +59,7 @@ public class EventPage {
      */
     public EventPage(Customer c1){
         // Initialize variables and objects
-        eventDatabase= new EventDatabase(); // create event database
+        eventDatabase= new ApiEventDatabase(true); // create API-based event database with local backup
         this.c1 = c1; // create customer that was passed in
         total=0;
         showTable.setDefaultEditor(Object.class, null);// Disables editing of table cells
@@ -181,23 +182,39 @@ public class EventPage {
                 if (flag) {
                     // Get the selected row from the showTable
                     int index = showTable.getSelectedRow();
-                    TableModel model = showTable.getModel();
-                    // Get the values of the selected row
-                    String value1 = model.getValueAt(index, 0).toString().trim();
-                    String value2 = model.getValueAt(index, 1).toString().trim();
-                    String value3 = model.getValueAt(index, 2).toString().trim();
-                    String value4 = model.getValueAt(index, 3).toString().trim();
-                    String value5 = model.getValueAt(index, 4).toString().trim();
-
-                    // Display the event details in a new window
-                    JFrame startFrame = new JFrame("Home");
-                    startFrame.setContentPane(new EventInfo(value1, value2, value3, value4, value5).panel1);
-                    startFrame.setPreferredSize(new Dimension(800, 700));
-                    startFrame.pack();
-                    Image icon = Toolkit.getDefaultToolkit().getImage("ticketTango.png");
-                    startFrame.setIconImage(icon);
-                    startFrame.setVisible(true);
-                }else{
+                    if (index != -1) { // Check if a row is actually selected
+                        TableModel model = showTable.getModel();
+                        
+                        // Get the values of the selected row
+                        String selectedName = model.getValueAt(index, 0).toString().trim();
+                        String selectedLocation = model.getValueAt(index, 1).toString().trim();
+                        String selectedDate = model.getValueAt(index, 2).toString().trim();
+                        String selectedTickets = model.getValueAt(index, 3).toString().trim();
+                        String selectedPrice = model.getValueAt(index, 4).toString().trim();
+                        
+                        System.out.println("Selected event: " + selectedName);
+                        
+                        // First, get values directly from the table selection
+                        EventInfo eventInfo = new EventInfo(
+                            selectedName, 
+                            selectedLocation, 
+                            selectedDate, 
+                            selectedTickets, 
+                            selectedPrice
+                        );
+                        
+                        // Create and show the event details window
+                        JFrame startFrame = new JFrame("Event Details: " + selectedName);
+                        startFrame.setContentPane(eventInfo.panel1);
+                        startFrame.setPreferredSize(new Dimension(800, 700));
+                        startFrame.pack();
+                        Image icon = Toolkit.getDefaultToolkit().getImage("ticketTango.png");
+                        startFrame.setIconImage(icon);
+                        startFrame.setVisible(true);
+                    } else {
+                        txtshow.setText("Please select an event first");
+                    }
+                } else {
                     // Display an error message if no event is selected
                     txtshow.setText("Please Select an Event");
                 }
@@ -301,33 +318,36 @@ public class EventPage {
      * @return events An ArrayList of the events.
      */
     public ArrayList<Event> getData() {
-        ArrayList<Event> events = new ArrayList<>();
-        File file = new File(path);
         try {
-            Scanner scanner = new Scanner(file);
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                String[] parts = line.split(",");
-                String name = parts[0];
-                String location = parts[1];
-                String date = parts[2];
-                String numberOfTicketsStr = parts[3].trim();
-                int numberOfTickets = Integer.parseInt(numberOfTicketsStr);
-                String priceStr = parts[4].trim();
-                double price = Double.parseDouble(priceStr);
-                Event event = new Event(name, location, date, numberOfTickets, price);
-                String[] dateValue= date.split("-");
-                int year = Integer.parseInt(dateValue[0].trim());
-                int month = Integer.parseInt(dateValue[1].trim());
-                int day = Integer.parseInt(dateValue[2].trim());
-                LocalDate end = LocalDate.now().minus(1, ChronoUnit.WEEKS);
-                if (end.isBefore(event.getDate(year,month,day)))
-                        events.add(event);
+            // Get upcoming events from the API
+            ArrayList<Event> apiEvents = eventDatabase.getEventDatabase();
+            ArrayList<Event> filteredEvents = new ArrayList<>();
+            
+            // Filter events based on date (keep events at least a week in the future)
+            for (Event event : apiEvents) {
+                String date = event.getDate();
+                if (date != null && !date.isEmpty()) {
+                    try {
+                        String[] dateValue = date.split("-");
+                        int year = Integer.parseInt(dateValue[0].trim());
+                        int month = Integer.parseInt(dateValue[1].trim());
+                        int day = Integer.parseInt(dateValue[2].trim());
+                        LocalDate end = LocalDate.now().minus(1, ChronoUnit.WEEKS);
+                        if (end.isBefore(event.getDate(year, month, day))) {
+                            filteredEvents.add(event);
+                        }
+                    } catch (Exception ex) {
+                        // Skip events with invalid date format
+                        System.out.println("Warning: Could not parse date for event: " + event.getName());
+                    }
+                }
             }
-            scanner.close();
-        } catch (IOException e) {
-            System.out.println("An error occurred while reading from the file: " + e.getMessage());
+            
+            return filteredEvents;
+        } catch (Exception e) {
+            System.out.println("Error fetching events from API: " + e.getMessage());
+            e.printStackTrace();
+            return new ArrayList<>();
         }
-        return events;
     }
 }
